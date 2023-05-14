@@ -1,4 +1,4 @@
-# The Complete React V8
+# Introduction to NodeJS v2
 
 ## FrontEnd Masters
 
@@ -103,9 +103,113 @@ Like the Browser, NodeJS comes with some practical globals for us to use in our 
 
 - **global** Think of this as like **window** but for Node.js. DON'T ABUSE IT!
 - **dirname** This global is a **String** value that points the the directory name of the file it's used in.
-- **filename** Like **__dirname**, it too is relative to the file it's written in. A **String** value that points the the file name
+- **filename** Like **\_\_dirname**, it too is relative to the file it's written in. A **String** value that points the the file name
 - **process** A swiss army knife global. An **Object** that contains all the context you need about the current program being executed. Things from env vars, to what machine you're on
 - **exports module require** These globals are used for creating and exposing modules throughout your app. We'll get to modules in a second 🌈
 
 #### The rest
+
 Depending on what version on Node.js you're running, there are so many more globals. Not as many as the Browser, but enough that you'll probably never use many of them. Check them out :link: [here](https://nodejs.org/api/globals.html).
+
+## 4. Modules
+
+How would we share or how would we include JavaScript in other JavaScript?
+
+How modules are just consuming JavaScript in general and not just NodeJS.
+
+There is no GUI in Node.js, no HTML or CSS. This also means there aren't any scipt tags to include JS files into our application. Node.js uses modules to to share your JavaScript with other JavaScript in your apps. No window or globals needed. If you've ever done `window.App = window.App || {}` then you'll like this!.
+
+#### What is a module
+
+A module is a reusable chunk of code that has its own context. That way modules can't interfere with or polute the global scope.
+
+You can think of them like lego blocks that you can create, import, and share.
+
+#### Two module types
+
+By default, NodeJS uses common js modules. With newer versions of NodeJS we can now take advantage of ES6 modules. To opt into using this syntax, you can use the **.mjs** extension instead of **.js.** We'll be using the ES6 module syntax going forward as they are the standard now with browsers adding support now.
+
+The difference is, if i wanted to share this action function with another JavaScript file somewhere else in my application, in the browser by having this in the file right now. It's gonna be attached to the global so i can access it via **window** in the next JavaScript file.
+
+But in NodeJS there is no window and nothing gets attached to the global space by default. Because all your files inside of the NodeJS actually get encapsulated in own little module fo they don't leak.
+
+So what you have to do here to be able to expose this piece of code, that way it can be used in another module, another file, is that you have to explicitly say i want this piece of code to be a module, i want it to be usable somewhere else, i wanna export it. So with CommonnJS syntax `module.exports = action`
+
+**index.js**
+
+```javascript
+const action = () => {
+  console.log('Hello from modules')
+}
+
+module.exports = action
+```
+
+So in this case, i wanna export the action function. And what this allows me to do is in another file, i can call it **app.js**
+
+**app.js**
+
+```javascript
+// const action = require('./index.js')
+const action = require('./index')
+```
+
+It's a function and it takes a relative path to another JavaScript file that you want to bring into this JavaScript file. I don'thave to put the **.js** here if it's a js file
+
+`node app.js // Hello from modules`
+
+
+**CommonJS** is the standard for NodeJS for quite some time, it's what ships with NodeJS, it's the default module syntax for NodeJS. But we're gonna use the newer one because that's the future of NodeJS, it's the future of the browers, it's the attempt of all the browser people and the NodeJS people coming together and, okay, how do we simplify this? How do we make it where JavaScript is truly universal across enviroments?
+
+And that's gonna be called the ES modules or ECMAScript modules. So that's what we're gonna be using in this course, because we have access to it on version 14.
+
+So in order to do that, a couple things we have to do. First, we have to tell NodeJS what version of modules that we want and there's a few ways we can do it.
+
+- We can be explicit by using the .mjs extension,  and by doing that, you're going to let Node know that, hey, i'm using ES modules in this file so use that instead of the .js
+
+- Another way is through the package.json and you can just say i wanna use type ES modules
+
+#### Module syntax
+
+Now, let's create our first module. The only thing we have to do is expose some code in one for our JavaScript files. We can do that with the **export** keyword.
+
+```javascript
+// utils.js
+export const action = () => {}
+
+export const run = () => {}
+```
+
+```javascript
+// app.js
+
+import { action, run } from './utils'
+```
+
+Few things happening here. Let's look at the **utils.js** file. Here we're using the **export** keyword before the variable declaration. This creates a named export. With the name being whatever the variable name is. In this case, a function called **action**. Now in **app.js**, we **import** the action module from the **utils** file. The path to the file is relative to the file you're importing from. You also have to prefix your path with a **'./'**. If you don't, Node will think you're trying to import a built in module or npm module. Because this was a named export, we have to import with brackets **{ action, run }** with the exact name of the modules exported. We don't have to import every module that is exported.
+
+Usually if you only have to expose one bit of code, you should use the **default** keyword. This allows you to import the module with whatever name you want.
+
+```javascript
+// utils.js
+default export function () {
+  console.log('did action')
+}
+```
+
+```javascript
+// app.js
+import whateverIWant from './utils'
+```
+
+You can read more about the module syntax on the :link: [NodeJS docs](https://nodejs.org/api/globals.html).
+
+#### Internal Modules
+
+NodeJS comes with some great internal modules. You can think of them as like the phenonminal global APIs in the browser. Here are some of the most useful ones:
+
+- **fs** - useful for interacting with the file system.
+- **path** - lib to assit with manipulating file paths and all their nuiances.
+- **child_process** - spawn subprocesses in the background.
+- **http** - interact with OS level networking. Useful for creating servers.
+
