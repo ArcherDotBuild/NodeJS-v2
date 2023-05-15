@@ -158,14 +158,13 @@ It's a function and it takes a relative path to another JavaScript file that you
 
 `node app.js // Hello from modules`
 
-
 **CommonJS** is the standard for NodeJS for quite some time, it's what ships with NodeJS, it's the default module syntax for NodeJS. But we're gonna use the newer one because that's the future of NodeJS, it's the future of the browers, it's the attempt of all the browser people and the NodeJS people coming together and, okay, how do we simplify this? How do we make it where JavaScript is truly universal across enviroments?
 
 And that's gonna be called the ES modules or ECMAScript modules. So that's what we're gonna be using in this course, because we have access to it on version 14.
 
 So in order to do that, a couple things we have to do. First, we have to tell NodeJS what version of modules that we want and there's a few ways we can do it.
 
-- We can be explicit by using the .mjs extension,  and by doing that, you're going to let Node know that, hey, i'm using ES modules in this file so use that instead of the .js
+- We can be explicit by using the .mjs extension, and by doing that, you're going to let Node know that, hey, i'm using ES modules in this file so use that instead of the .js
 
 - Another way is through the package.json and you can just say i wanna use type ES modules
 
@@ -212,4 +211,63 @@ NodeJS comes with some great internal modules. You can think of them as like the
 - **path** - lib to assit with manipulating file paths and all their nuiances.
 - **child_process** - spawn subprocesses in the background.
 - **http** - interact with OS level networking. Useful for creating servers.
+
+## 5. File System
+
+Until NodeJS, there wasn't a great way to access the file system on a machine with JavaScript, this is due to secutrity restrictions in most browsers. With NodeJS, one can create, edit, remote, read, strereadFileam, & more with files. If you've ever used a build tool like webpack or a parser like babel, then you realize just how powerful NodeJS can be when manipulating the file system.
+
+### Reading a file
+
+NodeJS ships with a powerful module, **fs** short for file system. There are many methods on the :link: [fs module](https://nodejs.org/api/fs.html). To read a file, we'll use the **readFile** method.
+
+Create a simple html file **template.html**.
+
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <h1>{title}</h1>
+  <p>{body}</p>
+</body>
+</html>
+```
+
+This **html** file will be used as template and has placeholders that we will interpolate later when writing a file.
+
+To read the file:
+
+```javascript
+import { readFile } from 'fs/promises'
+
+let template = await readFile(
+  new URL('./template.html', import.meta.url),
+  'utf-8'
+)
+```
+
+The **fs** module has import for promise based methods. We'll opt to use those as they have a cleaner API and using async + non-blocking methods are preferred. More on that later. Because we're using **.mjs** files, we don't have access to **\_\_dirname** or **\_\_filename** which is what is normally used in combination with the path module to form an appropiate file **path** for fs. So we have to use the **URL** global that takes a relative path and a base path and will create a URL object that is accepted by **readFile**. If you were to log **template**, you'd see that its just a string.
+
+```javascript
+import { readFile, writeFile } from 'fs/promises'
+
+let template = await readFile(new URL('./test.html', import.meta.url), 'utf-8')
+
+const data = {
+  title: 'My new file',
+  body: 'I wrote this file to disk using node',
+}
+
+for (const [key, val] of Object.entries(data)) {
+  template = template.replace(`{${key}}`, val)
+}
+
+await writeFile(new URL('./index.html', import.meta.url), template)
+```
+
+You should now have a **index.html** file that is the same as the **template.html** file but with the h1 and body text substituted with the data object properties. This is some powerful stuff 🔥! Open it in a browser and see it work. At their core, static analysis tools like TypeScript, Babel, Webpack, and Rollup do just this. Also, please don't use my hacky templating "engine" in a real app! 🤣
 
