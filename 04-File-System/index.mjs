@@ -3,7 +3,6 @@
 // import fs from 'fs'
 // console.log(fs);
 
-
 // Example 2
 // ####################
 // fs modules with promises
@@ -13,15 +12,12 @@
 
 // Example 3
 // ####################
-import { readFile } from 'fs/promises'
+// import { readFile } from 'fs/promises'
 // readFile takes 2 arguments
 // 1. The file name that we want
 // 2. Then we wanna set the base, (the path to this file)
-const template = await readFile(
-  new URL('template.html', import.meta.url),
-  'utf-8'
-)
-console.log(template);
+// const template = await readFile(new URL('template.html', import.meta.url))
+// console.log(template);
 
 // Convert buffer to a string
 // Couple ways to do this
@@ -31,15 +27,49 @@ console.log(template);
 
 // 2. Passing the encoding
 // readFile(new URL('template.html', import.meta.url)) // Before adding the encoding
-// readFile(new
+// new URL('template.html', import.meta.url), 'utf-8') // After adding the encoding
 
-// Our data
+// // Example 4
+// // ####################
+// import { readFile } from 'fs/promises'
+// let template = await readFile(
+//   new URL('template.html', import.meta.url),
+//   'utf-8'
+// )
+
+// // Our data
+// const data = {
+//   title: 'Learn NodeJS',
+//   body: 'This is the final HTML',
+// }
+
+// // Loop over this data and then just replace every single instance of the placeholders
+// // that match the key inside this
+
+// for (const [key, value] of Object.entries(data)) {
+//   template = template.replace(`{${key}}`, value)
+// }
+
+// console.log(template)
+
+// Example 5
+// ####################
+import { readFile, writeFile } from 'fs/promises'
+let template = await readFile(
+  new URL('template.html', import.meta.url),
+  'utf-8'
+)
+
 const data = {
   title: 'Learn NodeJS',
-  body: 'This is the final HTML'
+  body: 'This is the final HTML',
 }
 
-// Loop over this data and then just replace every single instance of the placeholders
-// that match the key inside this
+for (const [key, value] of Object.entries(data)) {
+  template = template.replace(`{${key}}`, value)
+}
 
-for(const [key, value] of Object.entries(data))
+// The next we need to do is we need to write this file back to disk
+
+// This will make the index.html being written to the disk
+await writeFile(new URL('index.html', import.meta.url), template)
