@@ -113,6 +113,8 @@ Depending on what version on Node.js you're running, there are so many more glob
 
 ## 4. Modules
 
+**folder 03**
+
 How would we share or how would we include JavaScript in other JavaScript?
 
 How modules are just consuming JavaScript in general and not just NodeJS.
@@ -214,7 +216,15 @@ NodeJS comes with some great internal modules. You can think of them as like the
 
 ## 5. File System
 
+**folder 04**
+
 Until NodeJS, there wasn't a great way to access the file system on a machine with JavaScript, this is due to secutrity restrictions in most browsers. With NodeJS, one can create, edit, remote, read, strereadFileam, & more with files. If you've ever used a build tool like webpack or a parser like babel, then you realize just how powerful NodeJS can be when manipulating the file system.
+
+There are sync versions of modules, and that really comes down to like how NodeJS works. So if you don't use the sync version of a file system method, it's going to be asynchronous. As in, it's going to be set aside in the event loop tobe processed on the next tick at some point. Because it's asynchronous, we're going to to continue to accept input throughout this Node execution while this is being processed in the background. And then Node will notify us via a callback when it's done.
+
+If you prefer to block the process of Node as in, hey do not move forward, do not process any other code, do not accept any other input until this is done, then you would use the sync version.
+
+In most cases you probably would never use the sync version of anything in NodeJS. There are some rare ones where you literally don't want anything to happen. Typically like on a server startup, or some initialization where you just want everything to be done before the next thing happens because it only happens once.
 
 ### Reading a file
 
@@ -271,3 +281,76 @@ await writeFile(new URL('./index.html', import.meta.url), template)
 
 You should now have a **index.html** file that is the same as the **template.html** file but with the h1 and body text substituted with the data object properties. This is some powerful stuff 🔥! Open it in a browser and see it work. At their core, static analysis tools like TypeScript, Babel, Webpack, and Rollup do just this. Also, please don't use my hacky templating "engine" in a real app! 🤣
 
+#### What is a buffer in Example 3
+
+A buffer, it's like the little individual bits of, in this case, a file. It's all the little bits that make up a file. It's not a string, it's implementation. It's when you want to stream something.
+
+But this isn't useful if we need to do some processing, unless you wanna do a process on a buffer which i don't. So we need to convert this to a string, and then we can actually look those variables, those placeholders, and we can interpolate them with actual values.
+
+#### What is Object.entries in Example 4
+
+When you call Object.entries and pass in an object to it, it's basically gonna return an array of key value pairs. Si tuples, so it'd be an array of arrays. And each array in the big array is gonna have a key as its first value, and a value as its second value.
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
+
+## 6. Error Handling
+
+**folder 05**
+
+The last thing you want is your entire server crashing because of an error, or, is that exactly what you want 🤷‍♀️? Regardless, you should have th choice. So you better handle those errors. Depending on the type of code (sync, promise, async callback, async await, etc) Node allows us to handle our errors how we see fit.
+
+#### Process exiting
+
+When a exception is thrown in Node.js, the current process will exit with a code of **1**. This effectively errors out and stops your programing completely. You can manually do this with:
+
+**process.exit(1)**
+
+Although you shouldn't. This is low level and offers no chance to catch or handle an exception to decide on what to do. Imagine your entire API shutting down and restarting just because a user sent a malformed payload that resulting the DB throwing and exception. That would be terrible.
+
+#### Async Errors
+
+When dealing with callbacks that are used for async operations, the standard pattern is:
+
+```javascript
+fs.readFile(filePath, (error, result) => {
+  if (error) {
+    // do something
+  } else {
+    // yaaay
+  }
+})
+```
+
+Callbacks accept the **(error, result)** argument signature where error could be **null** if there is no error.
+
+For **promises**, you can continue to use the **.catch()** pattern. Nothing new to see here.
+
+For **async / await** you should use **try / catch**.
+
+```javascript
+try {
+  const result = await asyncAction()
+} catch (e) {
+  // handle error
+}
+```
+
+#### Sync Errors
+
+For sync errors, try / catch works just fine, just like with async await.
+
+```#### javascript
+try {
+  const result = syncAction()
+} catch (e) {
+  // handle error
+}
+```
+
+#### Catch All
+
+Finally, if you just can't catch those pesky errors for any reason. Maybe some lib is throwing them and you can't catch them. You can use:
+
+```javascript
+process.on('uncaughtException', cb)
+```
