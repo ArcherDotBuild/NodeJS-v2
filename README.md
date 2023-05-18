@@ -19,7 +19,7 @@ https://intro-to-nodejs-v2-site.vercel.app/
 
 #### What is NodeJS
 
-Node.js is a runtime for built on top of Chrome's V8. It allows you to develop apps in JavaScript outside of the browser. It's single threaded non blocking and asynchronous. This is acheived by the use of an event loop at the core of Node.js. If you know JS then you already know how to develop with Node.js, kinda...
+NodeJS is a runtime for built on top of Chrome's V8. It allows you to develop apps in JavaScript outside of the browser. It's single threaded non blocking and asynchronous. This is acheived by the use of an event loop at the core of NodeJS. If you know JS then you already know how to develop with NodeJS, kinda...
 
 JavaScript is single threaded, as in, it's only going to be able to process work and amount of work in one little isolated instance and then everything else kinda runs in the background. This allow Node to be able to process things much faster than a lot of other OS level languages, as long as those tasks are not CPU bound. So if you're not doing things like arithmetic or AI or machine learning, NodeJS is probably a perfect tool for you because it can handle things and put them in the background and continue to stay open to handle incoming requests and things like that
 
@@ -45,7 +45,7 @@ If you're running windows and not using WSL, I recommend you use the official in
 
 #### For everyone else
 
-versions of Node.js at once and switch when you need. Also, NVM installs NodeJS in a folder that will not have permission errors that you would otherwise run into with the official installer.
+versions of NodeJS at once and switch when you need. Also, NVM installs NodeJS in a folder that will not have permission errors that you would otherwise run into with the official installer.
 
 https://github.com/nvm-sh/nvm
 
@@ -101,7 +101,7 @@ Like the Browser, NodeJS comes with some practical globals for us to use in our 
 
 #### Common
 
-- **global** Think of this as like **window** but for Node.js. DON'T ABUSE IT!
+- **global** Think of this as like **window** but for NodeJS. DON'T ABUSE IT!
 - **dirname** This global is a **String** value that points the the directory name of the file it's used in.
 - **filename** Like **\_\_dirname**, it too is relative to the file it's written in. A **String** value that points the the file name
 - **process** A swiss army knife global. An **Object** that contains all the context you need about the current program being executed. Things from env vars, to what machine you're on
@@ -109,7 +109,7 @@ Like the Browser, NodeJS comes with some practical globals for us to use in our 
 
 #### The rest
 
-Depending on what version on Node.js you're running, there are so many more globals. Not as many as the Browser, but enough that you'll probably never use many of them. Check them out :link: [here](https://nodejs.org/api/globals.html).
+Depending on what version on NodeJS you're running, there are so many more globals. Not as many as the Browser, but enough that you'll probably never use many of them. Check them out :link: [here](https://nodejs.org/api/globals.html).
 
 ## 4. Modules
 
@@ -119,7 +119,7 @@ How would we share or how would we include JavaScript in other JavaScript?
 
 How modules are just consuming JavaScript in general and not just NodeJS.
 
-There is no GUI in Node.js, no HTML or CSS. This also means there aren't any scipt tags to include JS files into our application. Node.js uses modules to to share your JavaScript with other JavaScript in your apps. No window or globals needed. If you've ever done `window.App = window.App || {}` then you'll like this!.
+There is no GUI in NodeJS, no HTML or CSS. This also means there aren't any scipt tags to include JS files into our application. NodeJS uses modules to to share your JavaScript with other JavaScript in your apps. No window or globals needed. If you've ever done `window.App = window.App || {}` then you'll like this!.
 
 #### What is a module
 
@@ -301,7 +301,7 @@ The last thing you want is your entire server crashing because of an error, or, 
 
 #### Process exiting
 
-When a exception is thrown in Node.js, the current process will exit with a code of **1**. This effectively errors out and stops your programing completely. You can manually do this with:
+When a exception is thrown in NodeJS, the current process will exit with a code of **1**. This effectively errors out and stops your programing completely. You can manually do this with:
 
 **process.exit(1)**
 
@@ -354,3 +354,65 @@ Finally, if you just can't catch those pesky errors for any reason. Maybe some l
 ```javascript
 process.on('uncaughtException', cb)
 ```
+
+## Section 03: Packages
+
+## 7. Creating Local Packages & NPM
+
+**folder 06**
+
+The most beautiful part about NodeJS is not the JavaScript, it's the thriving community. There are millions of node projects ready to be installed and consumed by your application. These projects are called packages. A package can have several modules and other packages. NodeJS has built in support for these packages so you can take advantage of them at any time.
+
+#### NPM
+
+**Init**
+To consume a package, we must first turn our app into a package. We can do this with a simple file called **package.json** on the root of our app. Writing it by hand is cool, but using a CLI called **npm** is better. NPM was already installed when you installed NodeJS. In a new folder, run: **npm init**
+
+This will initialze a new package by walking you through a few prompts. Once you're finished, you'll have a **package.json** file that looks like this:
+
+```json
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+```
+
+Now are soon to be app is a package. We'll get into how to distribute and deploy different types of Node.js apps, but for now, this package is staying local. Let's take a look at some of these fields:
+
+- **"name"** - is the name of your package. Can be anything since we're local
+- **"version"** - is the :link: [Semantic Version Number](https://semver.org/) or semver
+- **"main"** - the main entry point into your package
+- **"scripts"** - object of custom scripts to be excuted with **npm** cli
+
+#### Commands
+
+NPM has :link: [several commands](https://docs.npmjs.com/cli/v6/commands) at its disposal that you don't need to know really. There are some important ones that you will use repeatedly.
+
+- **npm install** - installs given module(s) from remote registries or local sources
+- **npm test** - runs the **test** script in your package.json
+- **npm uninstall** - will uninstall a give package
+
+No matter what company you're at or the app, you'll work with these three commands all the time. Unless you're one of the crazies that don't write tests 😘. The rest of the commands will be unique to your app.
+
+#### Finding and installing packages
+
+Most modules are hosted on a registry somewhere. The biggest and most used one is, well, the :link: [NPM registry](https://www.npmjs.com/). They don't stand alone though. Github (which owns NPM now) also allows devs to publish packages to their registry. And there are many others. The sweet thing about NPM, is that you can point to any registry, default being NPM.
+
+A good flow to find a package you need that you don't already know by name yet, is to go the the :link: [npm site](https://www.npmjs.com/) or Google and search for what you need. Say you need a lib to convert html to PDF's 🤷, NPM will give you back a list of packages.
+
+Once you click a package, you can see the documentation from the README.md and any links to Github or website. You can also see the author and the last time it was updated. All of this info is great to help with choosing a package to install. You never know what you're going to get. Once you know the package(s) you want to install, you can do so with:
+
+`npm install package1 package2 package3 --save`
+
+You can install as many packages with one command as you like. The `--save` flag is to let NPM know to update the package.json's dependency field with all of these packages. We need this because we don't want to check in the downloaded packages into source code for many reason. So how does anyone else on your team, or even you on another machine know what packages this app needs? Well NPM will save the package names and versions so NPM on another machine can look at that and install from there. Your package.json should have updated.
+
+You'll also notice a new folder on your project's root named **node_modules**. This is where NPM will install your packages. You should never have to touch this folder. But if you take a peek, you'll see more than the packages you installed. That's because those packages needed other packages, and so on and so on. NPM stores them flat in the node_modules folder. This helps with preventing duplicates and circular dependencies.
+
+There's so much more to learn about NPM and node_modules, but this isn't the advanced course. This is all you need to know to build something, which is what we're doing next.
