@@ -416,3 +416,25 @@ You can install as many packages with one command as you like. The `--save` flag
 You'll also notice a new folder on your project's root named **node_modules**. This is where NPM will install your packages. You should never have to touch this folder. But if you take a peek, you'll see more than the packages you installed. That's because those packages needed other packages, and so on and so on. NPM stores them flat in the node_modules folder. This helps with preventing duplicates and circular dependencies.
 
 There's so much more to learn about NPM and node_modules, but this isn't the advanced course. This is all you need to know to build something, which is what we're doing next.
+
+`npm install lodash --save` we are passing a flag **--save** you can think of flags as like, options that we pass into a command line tool
+
+## 7. Using NPM packages
+
+**folder 07**
+
+When we were importing modules that we created, notice that i put this **./** here, this is very important, this is not optional or if you got to go up a couple levels, **../**, this is telling NPM, NodeJS, i want you to resolve a module that i created locally, it's on the file system, it's in this project, go get it, it's a file.
+
+But when you don't put the **./** in front of it, it's telling NPM, NodeJS, this is either an internal module like **fs** or it's something that i installed via NPM and it's in a **node_modules** folder
+
+`npm uninstall lodash`
+
+#### Global NPM packages
+
+`npm install yarn -g` **-g** for globally, this will install this package globally to use for ever, think about it something like a CLI
+
+`which npx` NPX is basically like running one off global install
+
+`npx yarn add lodash` install yarn once to use the lodash package, without installing yarn globally
+
+`npm uninstall yarn -f` uninstall globally
