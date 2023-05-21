@@ -565,3 +565,119 @@ The NodeJS interpreter is installed in some folder called bin. You can think of 
 ## Section 05: Servers
 
 ## 11. Creating a Low-Level Server
+
+NodeJS has access to OS level functionality, like networking tools. This allows us to build very capable servers. Mixed with the fact that NodeJS is single threaded and runs an even loop for async tasks, NodeJS is widely used for API's that need to respond fast and don't require heavy CPU intensive work.
+
+#### Node Threads
+
+A lot of people use Node, because it is JavaScript, but it does have access to the OS-level things. But also because when it comes to APIs and stuff, Node is single threaded.
+
+A thread is a block, so you have a CPU with 8 cores, you could think of 1 thread taking up 1 core. So you can do 8 different things at once if you took up all 8 cores, whereas JavaScript only ever take 1 of those cores, 1 of those threads. And it basically uses an event loop, which has a different worker thread separate from the thread that your code is working on. And it will schedule different things. And it will just keep looping over and over to see if some work needs to be done. And when that work is done, it'll basically notify you when it's done with a callback, which can be translated to a promise, which can be translated to async/await.
+
+So this basically allows us to continue receiving requests from our users and our customers at the same time we're scheduling more work to be done and process in the background.
+
+Whereas other languages, it's blocking. So you might have requests coming in and they're being processed in kinda like a serial manner. That doesn't mean they're slow. they're not slow, they just are blocking, they have to have access to muliple threads.
+
+The other thing is Node can have access to multiple threads. just by default, it doesn't, but you could use that specific node module, or even a third party module is probably a better than using the internal one, to actually spawn different amounts of work into different threads.
+
+Which is perfect for something like load balancing when you're deplyiong a server somewhere. So it's a manual thing that you have to set up, and you have to manage that yourself. It is not managed via Node like other languages are, so just keep mind of that.
+
+#### The hard way
+
+NodeJS ships with the http module. This module is an abstraction around OS level networking tools. For NodeJS , the http module would be considered "low level". Let's create a simple server.
+
+```javascript
+import http from 'http'
+
+const host = 'localhost'
+const port = 8000
+
+const server = http.createServer((req, res) => {
+  if (req.method === 'POST') {
+    let body = ''
+
+    req.on('data', (chunk) => {
+      body += chunk.toString()
+    })
+
+    req.on('end', () => {
+      if (req.headers['content-type'] === 'application/json') {
+        body = JSON.parse(body)
+      }
+
+      console.log(body)
+      res.writeHead(201)
+      res.end('ok')
+    })
+  } else {
+    res.writeHead(200)
+    res.end('hello from my server')
+  }
+})
+
+localhost:
+
+server.listen(port, host, () => {
+  console.log(`Server is running on http://${host}:${port}`)
+})
+```
+
+**Closing the server ctrl + c**
+
+Using the **createServer** method on the http module, we create a server. Before we start the server, we need to make sure it can handle incoming requests. That's the callback inside of **createServer**. Next is starting the server. To do that, we need a port and a host. Sites default to port **8080** or **8000** so it's not uncommon to use that when developing locally. The host is going to be your machine, which is **localhost** or **127.0.0.1**.
+
+Using the **http** module is fine for this small example, but for bulding real world APIs we should utilize the community and install some packages to help up with this task.
+
+### ExpressJS
+
+There is an awesome packaged, **express**, that makes creating servers in Node.js a breeze. We're going to use it now.
+
+`npm install express body-parser morgan`
+
+- express - a framework for building servers
+- body-parser - a middleware that parses incoming requests
+- morgan - a middleware for logging incoming requests
+
+With everything installed, we'll create a simple API for a todo app using express.
+
+```javascript
+import express from 'express'
+import morgan from 'morgan'
+import bp from 'body-parser'
+
+const { urlencoded, json } = bp
+
+const db = {
+  todos: [],
+}
+
+const app = express()
+
+app.use(urlencoded({ extended: true }))
+app.use(json())
+app.use(morgan('dev'))
+
+app.get('/todo', (req, res) => {
+  res.json({ data: db.todos })
+})
+
+app.post('/todo', (req, res) => {
+  const newTodo = { complete: false, id: Date.now(), text: req.body.text }
+  db.todos.push(newTodo)
+
+  res.json({ data: newTodo })
+})
+
+app.listen(8000, () => {
+  console.log('Server on http://localhost:8000')
+})
+```
+
+Compared to the native **http** module, express feels like cheating.
+
+Our todo API has two routes:
+
+- **GET /todo** - get all todos
+- **POST /todo** - create a new todo
+
+Express has a healthy community with tons of plugins and middleware to help you build out API's.
