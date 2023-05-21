@@ -11,5 +11,10 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^3.3.1",
+    "open": "^9.1.0",
+    "yargs": "^17.7.2"
+  }
 }

@@ -544,3 +544,24 @@ With just a few lines of JS we were able to create a really powerful CLI with ro
 The NodeJS interpreter is installed in some folder called bin. You can think of **bin** is the folder where all your CLI's get installed, all your global commands they get installed in a bin folder.
 
 ## 10. Building a Reddit CLI
+
+`console.log(process.argv)` It returns an array, the first two things are always gonna be the path to the interpreter which is **NodeJS**, and then a path to the CLI, whic is reddit, and everything else after that it's gonna be like arguments and flags
+
+`reddit hello --print`
+
+```bash
+[
+  '/home/elfgod/.nvm/versions/node/v16.13.0/bin/node',
+  '/home/elfgod/.nvm/versions/node/v16.13.0/bin/reddit',
+  'hello',
+  '--print'
+]
+```
+
+`reddit print` or `print -p` it will print the reddit post in the console
+`reddit` it will open the reddit post in the browser
+`node test.js` it will print the big object formatted
+
+## Section 05: Servers
+
+## 11. Creating a Low-Level Server
