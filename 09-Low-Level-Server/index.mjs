@@ -34,27 +34,34 @@ const server = http.createServer((req, res) => {
     // data comes in and then send that data over to the body to be collected, which we could
     // then look at.
     req.on('data', (chunk) => {
+      // Chunk this together as in that JSON object was sent up from HTTPie
+      // was broken up into little bits of data and every time one of them came in
+      //  i appended it to this body string
       body += chunk
     })
 
     // When it's done, there's no more data coming in.
     // This is where you would insert into a database
     req.on('close', () => {
-      console.log(body)
+      // After appended i was able to log it which gave me that JSON
+      console.log(body) // JSON String
+
+      // If i wanna turn this back into the actual object
+      console.log(JSON.parse(body)); // Object
     })
 
     // Writing the header, the status code
     res.writeHead(201) // 201, successful POST, 200 sucessful GET
 
     // Close the response
-    req.end('ok')
+    res.end('ok')
   } else {
     res.writeHead(200)
     // If you didn't POST, you just did a regular GET
-    req.end('hi')
+    res.end('hi')
   }
 })
 
 server.listen(port, host, () => {
-  console.log(`Server on ${host}:${port}`);
+  console.log(`Server on ${host}:${port}`)
 })

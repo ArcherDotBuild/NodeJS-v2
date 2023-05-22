@@ -566,6 +566,8 @@ The NodeJS interpreter is installed in some folder called bin. You can think of 
 
 ## 11. Creating a Low-Level Server
 
+**folder 09 - Low Level Server**
+
 NodeJS has access to OS level functionality, like networking tools. This allows us to build very capable servers. Mixed with the fact that NodeJS is single threaded and runs an even loop for async tasks, NodeJS is widely used for API's that need to respond fast and don't require heavy CPU intensive work.
 
 #### Node Threads
@@ -615,9 +617,7 @@ const server = http.createServer((req, res) => {
   }
 })
 
-localhost:
-
-server.listen(port, host, () => {
+localhost: server.listen(port, host, () => {
   console.log(`Server is running on http://${host}:${port}`)
 })
 ```
@@ -681,3 +681,22 @@ Our todo API has two routes:
 - **POST /todo** - create a new todo
 
 Express has a healthy community with tons of plugins and middleware to help you build out API's.
+
+## 12.  Testing an API with HTTPie
+
+**https://httpie.io/** : HTTPie -- command-line HTTP client for the API era
+
+
+If i don't put anything else, it'll just do a **GET** request to the blank URL
+```bash
+# Doing a GET
+http localhost:8000
+http :8000
+```
+
+Doing a **POST** request  
+Creating an object with a color field and a food field
+```bash
+# Doing a POST
+http POST :8000 color=red food=pizza
+```
