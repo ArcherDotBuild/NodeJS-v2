@@ -628,6 +628,30 @@ Using the **createServer** method on the http module, we create a server. Before
 
 Using the **http** module is fine for this small example, but for bulding real world APIs we should utilize the community and install some packages to help up with this task.
 
+## 12. Testing an API with HTTPie
+
+**https://httpie.io/** : HTTPie -- command-line HTTP client for the API era
+
+If i don't put anything else, it'll just do a **GET** request to the blank URL
+
+```bash
+# Doing a GET
+http localhost:8000
+http :8000
+```
+
+Doing a **POST** request  
+Creating an object with a color field and a food field
+
+```bash
+# Doing a POST
+http POST :8000 color=red food=pizza
+```
+
+## 13. Create a Server API with ExpressJS
+
+**folder 10 - ExpressJS Server**
+
 ### ExpressJS
 
 There is an awesome packaged, **express**, that makes creating servers in Node.js a breeze. We're going to use it now.
@@ -682,21 +706,31 @@ Our todo API has two routes:
 
 Express has a healthy community with tons of plugins and middleware to help you build out API's.
 
-## 12.  Testing an API with HTTPie
+#### What is a MiddleWare?
 
-**https://httpie.io/** : HTTPie -- command-line HTTP client for the API era
+You can think of a middleware as like a little piece of funcionality that sits in between what you eventually wanna do with the request **(in this case)** and when it came in. It's like a pipe of plugins that can manipulate the request, it can inspect the request, it can do whatever it wants to the request before it eventually sends it to another middleware or, in this case the controller.
 
+**GET** request
 
-If i don't put anything else, it'll just do a **GET** request to the blank URL
 ```bash
-# Doing a GET
-http localhost:8000
 http :8000
 ```
 
-Doing a **POST** request  
-Creating an object with a color field and a food field
+**POST** request
+
 ```bash
-# Doing a POST
-http POST :8000 color=red food=pizza
+http POST :8000/todo text="eat more food today"
+http POST :8000/todo text="clean up my closet"
+```
+
+This nice pretty logs we have, is **Morgan**, this is that middleware that's logging this for us.
+
+```bash
+GET / 404 3.107 ms - 139
+POST /todo 200 1.904 ms - 49
+```
+
+**GET** request, we get an array of the todos that we have, because we're still running the server, they're still in memory
+```bash
+http :8000/todo
 ```
