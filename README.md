@@ -923,7 +923,7 @@ Which is great for UIs, and basically, what that is, it'll take the string repre
 
 ## Section 07: Deployment
 
-## 19. Deployment Packages
+## 19. Deployment: Packages
 
 **folder 14 - Deployment Packages**
 
@@ -945,3 +945,44 @@ We're now ready to publish. Just run:
 
 And that's it. Your CLI can now be installed with `npm install [name]`.
 
+## 20. Deployment: Servers
+
+#### Servers
+
+For API's and background tasks that operation on API's or databases, you'd deploy these to a hosting provider like AWS, Heroku, Google Cloud, etc. Let's deploy our Server! We'll be using Heroku for this as its really easy to deploy an app.
+
+First create a heroku account and then install the :link: [cli](https://devcenter.heroku.com/articles/heroku-cli). Next, we have to tell heroku how to start our app. We can add a **start** script in our package.json. We also have to tell heroku what version of NodeJS we want to use.
+
+```json
+"scripts": {
+  "start": "node ./path/to/server.mjs"
+},
+
+"engines": {
+  "node": "14.x"
+}
+```
+
+We have to change a few things to ensure our Server won't crash when deployed. Right now we have a hard coded port, we need to change that to an environment variable that Heroku will inject at runtime. We can use **process.env.PORT**. Lastly, make sure we're not checking in the **node_modules** folder into git by adding it to the **.gitignore** file. If you don't have one, then create one and this
+
+```bash
+/node_modules
+npm-debug.log
+.DS_Store
+/*.env
+```
+These are just some common files and folders that we don't want tracked in git. We'll be deploying to heroku with git, so we don't want these files in heroku either. Commit your changes to git, and then login to the heroku CLI
+
+`heroku login`
+
+Next, create a new heroku app:
+
+`heroku create`
+
+Finally, push our server to heroku via git
+
+`git push heroku main`
+
+You'll see the build output of heroku deploying your app. Once its done, we can try the live URL.
+
+...And that's it!
