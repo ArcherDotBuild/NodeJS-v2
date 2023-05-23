@@ -920,3 +920,28 @@ Which is great for UIs, and basically, what that is, it'll take the string repre
 1. Click on code line 3 (const = result), the red button to add a debugger point
 2. Click the debug tab on the left side bar
 3. Start playing with the debugger
+
+## Section 07: Deployment
+
+## 19. Deployment Packages
+
+**folder 14 - Deployment Packages**
+
+### Deployment
+
+Now that you can develop with NodeJS, you need to learn how to get your apps off your local machine and into the world. Depending on what your app does will determine how you deploy it.
+
+#### Packages
+
+For CLI's, Libraries, Plugins, etc, you would publish these to NPM so othere devs can install it. The NPM CLI makes this easy. Let's take our CLI that we created and publish it.
+
+First thing is to make sure you have a unique package name in the name field of **package.json**. NPM will let you know when you try to publish. Next, create a NPM account. Once you've done that, you need to login to NPM from your terminal with
+
+`npm login`
+
+We're now ready to publish. Just run:
+
+`npm publish`
+
+And that's it. Your CLI can now be installed with `npm install [name]`.
+
