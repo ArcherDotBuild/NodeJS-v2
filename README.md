@@ -904,3 +904,9 @@ Now, lets run the test. Jest will look for any file with the **.(spec|test).js**
 `npm test`
 
 What we get back here is much more pleasant compared to our plain test we made with assert. This is the default reporter, but you can add more reporters like html or json. Or make your own.
+
+## 17. Asynchronous Tests
+
+#### Jest supports snapshot testing
+
+Which is great for UIs, and basically, what that is, it'll take the string representation of your UI, so the HTML, the classes, all those things. And it'll just write that to a file with the exact spaces and everything. Everything that's rendered out, it'll write that to a file. And then when you run it again, or write it to a file again, it'll compare the two. It those two strings don't match exactly, then the snapshot failed. That means someone's changed something in its DOM that resulted in the HTML looking different. That's called a **snapshot test**.
