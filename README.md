@@ -755,6 +755,8 @@ http :8000/todo/IdGoesHere
 http :8000/todo/1684799971492
 ```
 
+## Section 06: Testing
+
 ## 15. Vanilla Unit Tests
 
 **folder 11 - ExpressJS Server**
@@ -910,3 +912,11 @@ What we get back here is much more pleasant compared to our plain test we made w
 #### Jest supports snapshot testing
 
 Which is great for UIs, and basically, what that is, it'll take the string representation of your UI, so the HTML, the classes, all those things. And it'll just write that to a file with the exact spaces and everything. Everything that's rendered out, it'll write that to a file. And then when you run it again, or write it to a file again, it'll compare the two. It those two strings don't match exactly, then the snapshot failed. That means someone's changed something in its DOM that resulted in the HTML looking different. That's called a **snapshot test**.
+
+## 18. Debugging
+
+**folder 13 - Debugging**
+
+1. Click on code line 3 (const = result), the red button to add a debugger point
+2. Click the debug tab on the left side bar
+3. Start playing with the debugger
