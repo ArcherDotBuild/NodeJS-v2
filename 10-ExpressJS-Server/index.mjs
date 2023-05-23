@@ -41,11 +41,21 @@ app.post('/todo', (req, res) => {
   db.push(newTodo)
 
   // Respond back
-  res.json(newTodo)
+  // res.json(newTodo)
+  res.status(201).json(newTodo)
 })
 
 app.get('/todo', (req, res) => {
   res.json(db)
+})
+
+// /todo by a specific ID
+app.get('/todo/:id', (req, res) => {
+  const todo = db.find((t) => {
+    return t.id == +req.params.id
+  })
+  res.json({ data: todo })
+  console.log(req.params.id);
 })
 
 // A catch all routes, if someone tries to make a request to anything that's not

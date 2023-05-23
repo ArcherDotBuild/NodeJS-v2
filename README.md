@@ -734,3 +734,21 @@ POST /todo 200 1.904 ms - 49
 ```bash
 http :8000/todo
 ```
+
+## 14. Dynamic Routes in ExpressJS
+
+```javascript
+app.get('/todo/:id', (req, res) => {
+  const todo = db.find((t) => {
+    return t.id == +req.params.id
+  })
+  res.json({ data: todo })
+  console.log(req.params.id);
+})
+```
+
+**GET** request, we get one todo with the id
+```bash
+http :8000/todo/IdGoesHere
+http :8000/todo/1684799971492
+```
