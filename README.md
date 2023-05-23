@@ -6,6 +6,10 @@
 
 #### Course website:
 
+https://frontendmasters.com/courses/node-js-v2/
+
+#### Course Documentation:
+
 https://intro-to-nodejs-v2-site.vercel.app/
 
 #### Repos:
@@ -971,6 +975,7 @@ npm-debug.log
 .DS_Store
 /*.env
 ```
+
 These are just some common files and folders that we don't want tracked in git. We'll be deploying to heroku with git, so we don't want these files in heroku either. Commit your changes to git, and then login to the heroku CLI
 
 `heroku login`
