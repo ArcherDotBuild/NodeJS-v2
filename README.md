@@ -799,6 +799,10 @@ You should get an output that describes how this assertion fails. Because our ad
 
 Assert is great but there are some amazing tools and libs built around it that make writing and reading tests satisfying. One of those tools that the comminity has adopted is called **jest**.
 
+## 16. Jest
+
+**folder 12 - Jest**
+
 #### Using Jest
 
 Jest is a testing lib created by Facebook. Its a wonderful testing lib for any situation. Let's give it a try! Create a new package with npm and install jest
